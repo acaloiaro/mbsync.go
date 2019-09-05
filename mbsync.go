@@ -33,7 +33,7 @@ func main() {
 			cmd := exec.Command("mbsync", "-a")
 			stdoutStderr, err := cmd.CombinedOutput()
 			if err != nil {
-				log.Fatal(err)
+				log.Println("ERR:", err)
 			}
 			fmt.Printf("%s\n", stdoutStderr)
 		case <-wait:
