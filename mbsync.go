@@ -26,18 +26,25 @@ func main() {
 	ticker := time.Tick(interval)
 	wait := time.Tick(1 * time.Minute)
 
+	// Perform a sync before entering the loop
+	sync()
+
 	for {
 		select {
 		case <-ticker:
-			log.Println("Syncing...")
-			cmd := exec.Command("mbsync", "-a")
-			stdoutStderr, err := cmd.CombinedOutput()
-			if err != nil {
-				log.Println("ERR:", err)
-			}
-			fmt.Printf("%s\n", stdoutStderr)
+			sync()
 		case <-wait:
 			log.Println("Waiting...")
 		}
 	}
+}
+
+func sync() {
+	log.Println("Syncing...")
+	cmd := exec.Command("mbsync", "-a")
+	stdoutStderr, err := cmd.CombinedOutput()
+	if err != nil {
+		log.Println("ERR:", err)
+	}
+	fmt.Printf("%s\n", stdoutStderr)
 }
